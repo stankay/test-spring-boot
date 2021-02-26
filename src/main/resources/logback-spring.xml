@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <timestamp key="byDay" datePattern="yyyyMMdd" />
+    <springProperty scope="context" name="LOG_DIR" source="lcm.log.location" defaultValue="/var/log/camunda"/>
+    <springProperty scope="context" name="MAX_HISTORY" source="lcm.log.max.history" defaultValue="15"/>
+    <property name="PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="camunda_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-camunda.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-camunda-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rest_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-rest.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-rest-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>REQUEST</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+    </appender>
+
+    <appender name="persistance_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-persistence.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-persistence-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+
+        <!--        Filter every string that contains "hibernate" or "o.h." (which stands for "org.hibernate." package)-->
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <expression>return message.toLowerCase().contains("hibernate")
+                    || message.toLowerCase().contains("o.h.");</expression>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="scheduler_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-scheduler.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-scheduler-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>SCHEDULER</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="dmo_delivery_ws_service_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-dmo-delivery-ws-service.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-dmo-delivery-ws-service-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>DMO_DELIVERY_WS_SERVICE</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="da_document_ws_service_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-da-document-ws-service.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-da-document-ws-service-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>DA_DOCUMENT_WS_SERVICE</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="move_doc_ws_service_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-move-doc-ws-service.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-move-doc-ws-service-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>MOVE_DOC_WS_SERVICE</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="da_import_ws_service_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-da-import-ws-service.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-da-import-ws-service-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>DA_IMPORT_WS_SERVICE</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="tia_get_claim_event_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-tia-get-claim-event.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-tia-get-claim-event-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>TIA_GET_CLAIM_EVENT</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="tia_sublcaims_claim_item_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-tia-sublcaims-claim-item.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-tia-sublcaims-claim-item-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>TIA_SUBCLAIMS_CLAIM_ITEM</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="tia_create_item_case_log_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/legal-case-management-tia-create-item-case.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/legal-case-management-tia-create-item-case-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+                <marker>TIA_CREATE_ITEM_CASE</marker>
+            </evaluator>
+            <onMismatch>DENY</onMismatch>
+            <onMatch>NEUTRAL</onMatch>
+        </filter>
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache.ibatis" level="info" />
+
+    <logger name="javax.activation" level="info" />
+
+    <logger name="org.springframework" level="info" />
+
+    <logger name="org.camunda" level="info" />
+
+    <logger name="org.camunda.bpm.engine.test" level="debug" />
+
+    <root level="info">
+        <appender-ref ref="console" />
+        <appender-ref ref="camunda_log_file" />
+        <appender-ref ref="rest_log_file" />
+        <appender-ref ref="persistance_log_file" />
+        <appender-ref ref="scheduler_log_file" />
+        <appender-ref ref="da_import_ws_service_log_file" />
+        <appender-ref ref="move_doc_ws_service_log_file" />
+        <appender-ref ref="da_document_ws_service_log_file" />
+        <appender-ref ref="dmo_delivery_ws_service_log_file" />
+        <appender-ref ref="tia_get_claim_event_log_file" />
+        <appender-ref ref="tia_create_item_case_log_file" />
+        <appender-ref ref="tia_sublcaims_claim_item_log_file" />
+    </root>
+
+</configuration>
