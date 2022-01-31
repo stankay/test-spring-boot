@@ -1,4 +1,4 @@
-package test;
+package bare;
 
 import java.util.Properties;
 
