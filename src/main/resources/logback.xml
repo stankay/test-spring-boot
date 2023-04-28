@@ -9,30 +9,7 @@
         </encoder>
     </appender>
 
-    <appender name="FILE"
-        class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>log/server.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log/server.log.%d{yyyy-MM-dd}</fileNamePattern>
-        </rollingPolicy>
-
-        <encoder>
-            <pattern>${PATTERN}</pattern>
-            <immediateFlush>true</immediateFlush>
-        </encoder>
-    </appender>
-
-    <springProfile name="default">
-        <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
-            <appender-ref ref="FILE"/>
-        </root>
-    </springProfile>
-
-    <springProfile name="prod">
-        <root level="INFO">
-            <appender-ref ref="FILE"/>
-        </root>
-    </springProfile>
-
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
 </configuration>
